@@ -14,16 +14,6 @@
 #define RASTER_SLOT 19
 #endif
 
-void Default_Setup_Raster_Tab(CERMonHists *r);
-void Default_Setup_RasterBit32_Tab(CERMonHists *r);
-void Default_Setup_Raw_Raster_Tab(CERMonHists *r);
-void Default_Setup_Raw_Raster_Tab2(CERMonHists *r);
-void Default_Setup_Raw_Raster_Tab3(CERMonHists *r);
-void Default_Setup_1_Channel_Scope(CERMonHists *r);
-void Default_Setup_2_Channel_Scope(CERMonHists *r);
-void Default_Setup_3_Channel_Scope(CERMonHists *r);
-void Default_Setup_Helicity(CERMonHists *r);
-void Default_Setup_Trigger(CERMonHists *r);
 void Default_Initialize_Histograms(CERMonHists *r);
 
 #endif //RASTERMON_RASTERMONDEFAULTCONFIG_H
