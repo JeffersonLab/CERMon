@@ -20,17 +20,17 @@
 
 //#include "RasterEvioTool.h"
 //#include "RasterHists.h"
-#include "RasterMonConfigInfo.h"
+#include "ConfigInfo.h"
 
-class RasterMonGui;
+class CERMonGui;
 
-class RasterMonConfigPanel : public TGTransientFrame {
+class ConfigPanel : public TGTransientFrame {
 
 public:
    // const TGWindow *fParentWindow;
 //   RasterEvioTool *fEvio = nullptr;
 //   RasterHists *fHists = nullptr;
-   const RasterMonGui *fRasGui = nullptr;
+   const CERMonGui *fRasGui = nullptr;
 
    TGListBox *fDebugLevelChooser;
    TGNumberEntry *fEnterUpdateRate;
@@ -46,10 +46,10 @@ public:
    TGNumberEntry *fEnterScale_y;
    TGNumberEntry *fEnterOffset_y;
 
-   RasterMonConfigInfo *fInfo;
+   ConfigInfo *fInfo;
 
 public:
-   RasterMonConfigPanel(const RasterMonGui *parent, RasterMonConfigInfo *info);
+   ConfigPanel(const CERMonGui *parent, ConfigInfo *info);
 
    void UpdateDisplay();
    void OK() {

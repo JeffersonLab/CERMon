@@ -1,9 +1,9 @@
 //
 // Created by Maurik Holtrop on 6/14/22.
 //
-#include "RasterMonConfigPanel.h"
+#include "ConfigPanel.h"
 
-RasterMonConfigPanel::RasterMonConfigPanel(const RasterMonGui *parent, RasterMonConfigInfo *info):
+ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
                fRasGui(parent), fInfo(info), TGTransientFrame(gClient->GetRoot(), (TGWindow *) parent, 400, 200){
    // Handle the user input for configurable settings of the program.
    // Run the main bit of gui code.
@@ -228,7 +228,7 @@ RasterMonConfigPanel::RasterMonConfigPanel(const RasterMonGui *parent, RasterMon
 };
 
 
-void RasterMonConfigPanel::UpdateDisplay(){
+void ConfigPanel::UpdateDisplay(){
    // Update the information on the display from the items in memory.
    // This is called when loading the data from a file, so also set the actual corresponding value.
    // Because the "emit" does not emit what we think, and so actual values are not updated otherwise.
@@ -249,7 +249,7 @@ void RasterMonConfigPanel::UpdateDisplay(){
 }
 
 
-void RasterMonConfigPanel::ValueSet() {
+void ConfigPanel::ValueSet() {
    // Handle value changed in the Raster conversion section and rate section
    TGNumberEntry *nmbr = (TGNumberEntry *) gTQSender;
    int id = nmbr->WidgetId();
@@ -273,7 +273,7 @@ void RasterMonConfigPanel::ValueSet() {
 
 }
 
-void RasterMonConfigPanel::HandleButtons() {
+void ConfigPanel::HandleButtons() {
    // Handle different buttons.
 
    TGButton *btn = (TGButton *) gTQSender;

@@ -31,13 +31,13 @@
 #include <chrono>
 #include <filesystem>
 
-#include "RasterHists.h"
-#include "RasterEvioTool.h"
+#include "CERMonHists.h"
+#include "CERMonEvioTool.h"
 #include "ETConnectionConfig.h"
-#include "RasterMonConfigPanel.h"
-#include "RasterLogBookEntry.h"
+#include "ConfigPanel.h"
+#include "LogBookEntry.h"
 
-class RasterMonGui : public TGMainFrame {
+class CERMonGui : public TGMainFrame {
 
 public:
 
@@ -64,24 +64,24 @@ public:
    unsigned int fEvioStatusCheckRate=1000;  // How often to check if ET is okay.
    TGHProgressBar *fClearProgress;
 
-   RasterHists* fRHists = nullptr;
-   RasterEvioTool *fEvio = nullptr;  // Not an object we own, just a handy pointer.
+   CERMonHists* fRHists = nullptr;
+   CERMonEvioTool *fEvio = nullptr;  // Not an object we own, just a handy pointer.
    TGFileInfo fFileInfo;             // Contains file(s) chosen by Open dialog or populated from command line.
    TGFileInfo fSaveFileInfo;         // Contains info for Histogram Save dialog.
    unsigned int fUpdateRate=1000;     // Update rate in ms.
 
-   RasterMonConfigPanel *fConfig = nullptr;
-   RasterMonConfigInfo *fInfo = nullptr;
+   ConfigPanel *fConfig = nullptr;
+   ConfigInfo *fInfo = nullptr;
    bool fUpdateSelectedTabOnly = true;
-   std::unique_ptr<RasterLogBookEntry> fLogBook = nullptr;
+   std::unique_ptr<LogBookEntry> fLogBook = nullptr;
 
 public:
    int fDebug = 0;
 
 public:
-   RasterMonGui(RasterMonConfigInfo *info, RasterHists *hist, const TGWindow *p, UInt_t w, UInt_t h);
+   CERMonGui(ConfigInfo *info, CERMonHists *hist, const TGWindow *p, UInt_t w, UInt_t h);
 
-   virtual ~RasterMonGui() {
+   virtual ~CERMonGui() {
       // Clean up used widgets: frames, buttons, layout hints
       Stop();
       // Cleanup specifically allocated memory.
@@ -207,7 +207,7 @@ public:
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-ClassDef(RasterMonGui, 0)
+ClassDef(CERMonGui, 0)
 #pragma clang diagnostic pop
 
 };

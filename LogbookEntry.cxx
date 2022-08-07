@@ -6,13 +6,13 @@
 #include <thread>
 #include <ctime>
 #include <cstdlib>
-#include "RasterLogBookEntry.h"
+#include "LogBookEntry.h"
 
 #ifdef HAS_LOGBOOK
 #include "ELogBookShim.h"
 #endif
 
-RasterLogBookEntry::RasterLogBookEntry(const TGWindow *parent_window, RasterHists *rhists): fRHists(rhists) {
+LogBookEntry::LogBookEntry(const TGWindow *parent_window, CERMonHists *rhists): fRHists(rhists) {
    fParentWindow = parent_window;
 
    // Check if the logentry program can be found on disk.
@@ -102,7 +102,7 @@ RasterLogBookEntry::RasterLogBookEntry(const TGWindow *parent_window, RasterHist
 
 };
 
-TGTextEntry* RasterLogBookEntry::AddTextLine(string label_text, string init_text, string tooltip){
+TGTextEntry* LogBookEntry::AddTextLine(string label_text, string init_text, string tooltip){
    // Add a single entry line with label to the dialog.
    int label_width = 90;
    auto Frame = new TGHorizontalFrame(fMain, 0, 50, kLHintsExpandX);
@@ -119,7 +119,7 @@ TGTextEntry* RasterLogBookEntry::AddTextLine(string label_text, string init_text
 
 
 
-void RasterLogBookEntry::MakeEntry() {
+void LogBookEntry::MakeEntry() {
 
    if(!fAlreadyWritingImages) {
       //fEntryThread = std::thread(&RasterLogBookEntry::SaveCanvassesToFile, this);
@@ -232,7 +232,7 @@ void RasterLogBookEntry::MakeEntry() {
 // #endif
 }
 
-void RasterLogBookEntry::ScrubString(string &instr) {
+void LogBookEntry::ScrubString(string &instr) {
    // Remove the single quote character from the string, so command line entry works.
    size_t pos=0;
    while( (pos = instr.find("'", pos)) < instr.size()){
@@ -241,7 +241,7 @@ void RasterLogBookEntry::ScrubString(string &instr) {
    }
 }
 
-void RasterLogBookEntry::SubmitToLogBook() {
+void LogBookEntry::SubmitToLogBook() {
    std::cout << "Submit to logbook\n";
 
    fTitle = fTitleEntry->GetText();
@@ -339,7 +339,7 @@ void RasterLogBookEntry::SubmitToLogBook() {
 #endif
 }
 
-void RasterLogBookEntry::SaveCanvassesToFile(){
+void LogBookEntry::SaveCanvassesToFile(){
    // This is where all the work is done for the logbook entry. Reminder: this runs multi-threaded,
    // so resources must be local to this thread, or global to all log entries open.
    //

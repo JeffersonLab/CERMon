@@ -9,7 +9,7 @@
 #include <EvioTool.h>
 #include <FADCdata.h>
 #include <Leaf.h>
-#include "RasterMonEventInfo.h"
+#include "CERMonEventInfo.h"
 #include "CircularBuffer.h"
 #include <mutex>
 
@@ -76,7 +76,7 @@ struct EvioBank_t {
    }
 };
 
-class RasterEvioTool: public EvioTool{
+class CERMonEvioTool: public EvioTool{
 
 public:
    enum EVIO_CODES{
@@ -95,7 +95,7 @@ public:
    // Note on mem: The memory will be managed by TObjArray. So no delete to be called. No unique_ptr etc.
    Leaf<unsigned int>  *fEvioHead = nullptr;  // EvioHead is tag=49152 and is always there.
    unsigned long fMostRecentEventNumber=0;      // Number of last actual event that was read.
-   RasterMonEventInfo *fRasterHead = nullptr; // RasterHead is tag=
+   CERMonEventInfo *fRasterHead = nullptr; // RasterHead is tag=
 
    size_t fAdcBufferSize = 5000;
    std::vector<EvioBank_t> fEvioBanks;
@@ -109,8 +109,8 @@ public:
    std::mutex fBufferLock;  // Guard against buffer size changes.
 
 public:
-   explicit RasterEvioTool(string infile="");
-   ~RasterEvioTool() override{
+   explicit CERMonEvioTool(string infile="");
+   ~CERMonEvioTool() override{
       // Nothing to destroy.
    };
 
@@ -156,7 +156,7 @@ public:
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-ClassDef(RasterEvioTool, 0);
+ClassDef(CERMonEvioTool, 0);
 #pragma clang diagnostic pop
 
 };

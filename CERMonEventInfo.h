@@ -22,15 +22,15 @@
 #include "EvioTool.h"
 #include "Leaf.h"
 
-class RasterMonEventInfo: public Bank{
+class CERMonEventInfo: public Bank{
 
 public:
     Leaf<uint32_t> *RHead1 = nullptr;
     Leaf<uint32_t> *RHead2 = nullptr;
 
 public:
-  RasterMonEventInfo(){};
-  RasterMonEventInfo(Bank *b, unsigned short itag=37, unsigned short inum=0): Bank("RasterMonEventInfo", itag, inum, "RasterMonEventInfo data"){
+  CERMonEventInfo(){};
+  CERMonEventInfo(Bank *b, unsigned short itag=37, unsigned short inum=0): Bank("RasterMonEventInfo", itag, inum, "RasterMonEventInfo data"){
       b->AddBank((Bank *)this);
       // Bank 57610, 7 uint32, ??, event number, timestamp, ??, ??, ??, ??
       RHead1 = this->AddLeaf<uint32_t>("EventInfo", 57610, 0, "Event Info");
@@ -88,7 +88,7 @@ public:
       else return 0;
   };
 
-  ClassDef(RasterMonEventInfo, 1);
+  ClassDef(CERMonEventInfo, 1);
 };
 
 #endif /* Headbank_h */

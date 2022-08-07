@@ -2,8 +2,8 @@
 // Created by Maurik Holtrop on 3/29/22.
 //
 
-#ifndef RASTERMON_RASTERHISTS_H
-#define RASTERMON_RASTERHISTS_H
+#ifndef CERMONHISTS_H
+#define CERMONHISTS_H
 
 #include <TROOT.h>
 #include <TStyle.h>
@@ -26,7 +26,7 @@
 #include <TTimer.h>
 #include <TFile.h>
 
-#include "RasterEvioTool.h"
+#include "CERMonEvioTool.h"
 
 #include <iostream>
 #include <thread>
@@ -37,13 +37,13 @@
 #include "Histogram.h"
 #include "Tab.h"
 
-class RasterHists : public TQObject, public TObject{
+class CERMonHists : public TQObject, public TObject{
 
 private:
    bool fPause = true;
 
 public:
-   RasterEvioTool *fEvio = nullptr;
+   CERMonEvioTool *fEvio = nullptr;
    TGTab *fTabAreaTabs = nullptr;    // Pointer to the tab area
 
    bool fPadSizeIsUpdating = false;  // To lock for asynchronous resizing.
@@ -80,13 +80,13 @@ public:
    std::mutex fDrawLock;
 
 public:
-   RasterHists()= delete;
-   explicit RasterHists(RasterEvioTool *evio): fEvio(evio) {
+   CERMonHists()= delete;
+   explicit CERMonHists(CERMonEvioTool *evio): fEvio(evio) {
       fHistClearTimer = new TTimer(this, int(fHistClearTimerRate*1000));
       fHistClearTimer->TurnOff();
    };
 
-   ~RasterHists() override;
+   ~CERMonHists() override;
 
    void InitTabs();
    TGTab *AddTabArea(TGWindow *frame, int w, int h);
@@ -96,7 +96,7 @@ public:
    void DrawCanvas(int tab_no, TCanvas *canvas, vector<Histogram_t> &histograms, vector<Graph_t> &graphs, bool batch=false);
    void FillGraphs(int tab_no, vector<Graph_t> &graphs);
    void HistFillWorker(int seed=0);
-   RasterEvioTool *GetEvioPtr() const{return fEvio;}
+   CERMonEvioTool *GetEvioPtr() const{return fEvio;}
    bool Pause(){ bool prevstate = fPause; fPause = true; return prevstate;}
    bool UnPause(){ bool prevstate = fPause; fPause = false; return prevstate;}
    bool IsPaused(){return fPause;}
@@ -158,12 +158,11 @@ public:
       fHistClearTimer->Reset();
    }
 
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-ClassDef(RasterHists, 0)
+ClassDef(CERMonHists, 0)
 #pragma clang diagnostic pop
 
 };
 
-#endif //RASTERMON_RASTERHISTS_H
+#endif

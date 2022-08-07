@@ -1,15 +1,15 @@
 //
 // Created by Maurik Holtrop on 3/29/22.
 //
-#include "RasterMon.h"
-#include "RasterMonGui.h"
+#include "CERMon.h"
+#include "CERMonGui.h"
 
-RasterMonGui::RasterMonGui(RasterMonConfigInfo *info, RasterHists *hist, const TGWindow *p, UInt_t w, UInt_t h)
+CERMonGui::CERMonGui(ConfigInfo *info, CERMonHists *hist, const TGWindow *p, UInt_t w, UInt_t h)
       : fWindowWidth(w), fWindowHeight(h), fInfo(info), fRHists(hist), TGMainFrame(p,w,h) {
    Init();
 }
 
-void RasterMonGui::Init(){
+void CERMonGui::Init(){
 
    setlocale(LC_NUMERIC, "");  // This helps with fancy printing numbers, setting locale => printf("%'d",i) now works.
 
@@ -29,13 +29,13 @@ void RasterMonGui::Init(){
    fSaveFileInfo.SetFilename("RasterMonHists");
    fHistUpdateTimer = new TTimer(this, fUpdateRate) ;
    fEvioStatusCheckTimer = new TTimer(this, fEvioStatusCheckRate);
-   fLogBook = std::make_unique<RasterLogBookEntry>(this, fRHists);
+   fLogBook = std::make_unique<LogBookEntry>(this, fRHists);
    fLogBook->Connect("CloseWindow()", "RasterMonGui", this, "DoneLogEntry()");
 
    fEvio = fRHists->GetEvioPtr();
 }
 
-void RasterMonGui::AddMenuBar(){
+void CERMonGui::AddMenuBar(){
    // Add the menu bar to the main window.
 
    fMenuBar = new TGMenuBar(this, 10, 10, kHorizontalFrame);
@@ -69,7 +69,7 @@ void RasterMonGui::AddMenuBar(){
 
 }
 
-void RasterMonGui::AddControlBar(){
+void CERMonGui::AddControlBar(){
    // Bottom bar with control buttons.
 
    auto *hframe=new TGHorizontalFrame(this, fWindowWidth , 30, kFixedHeight);
@@ -141,7 +141,7 @@ void RasterMonGui::AddControlBar(){
                                             100,5,3,10));
 }
 
-void RasterMonGui::AddStatusBar() {
+void CERMonGui::AddStatusBar() {
    // status bar
 
    auto hframe = new TGHorizontalFrame(this, fWindowWidth, 24, kFixedHeight);
@@ -154,7 +154,7 @@ void RasterMonGui::AddStatusBar() {
    hframe->AddFrame(fStatusBar, new TGLayoutHints(kLHintsExpandX | kLHintsCenterY, 0, 0, 0, 0));
 }
 
-void RasterMonGui::StatusBarUpdate(){
+void CERMonGui::StatusBarUpdate(){
    // Update the information in the status bar.
    static int n_updates = 0;
    static unsigned long last_event_count=0;
@@ -194,14 +194,14 @@ void RasterMonGui::StatusBarUpdate(){
    fClearProgress->SetPosition(pos);
 }
 
-void RasterMonGui::AddTabArea() {
+void CERMonGui::AddTabArea() {
    //--------- create the Tab widget
    fTabAreaTabs = fRHists->AddTabArea(this, fWindowWidth, fWindowHeight);
    AddFrame(fTabAreaTabs, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY,
                                             2, 2, 5, 1));
 }
 
-void RasterMonGui::SetupGUI(){
+void CERMonGui::SetupGUI(){
    // Menu bar
 
    AddMenuBar();
@@ -218,7 +218,7 @@ void RasterMonGui::SetupGUI(){
    MapWindow();
 }
 
-void RasterMonGui::HandleMenu(int choice) {
+void CERMonGui::HandleMenu(int choice) {
    // Handle the menu choices.
    TRootHelpDialog *hd;
    ETConnectionConfig *et_dialog;
@@ -286,16 +286,17 @@ void RasterMonGui::HandleMenu(int choice) {
       case M_HELP_ABOUT:
          hd = new TRootHelpDialog(this, "About RasterMon ...", 550, 250);
          hd->SetText(""
-                     "===============  RasterMonGui, Version: " RASTERMON_VERSION " ===============\n"
-                     "This is a simple GUI program to monitor the Raster in the RGC run.\n"
+                     "===============  CERMon, Version: " CERMON_VERSION " ===============\n"
+                     "=============== CLAS12 EVIO Rapid Monitor ======================\n\n"
+                     "This is a simple GUI program to monitor the EVIO quantities for CLAS12.\n"
                      "It can open an EVIO file or attach to the CLAS12 ET ring to process\n"
-                     "the data coming from the experiment.\n"
+                     "the data coming in from the experiment.\n"
                      "You control the app with the buttons at the bottom: go, pause, stop\n"
                      "clear, clearall, config and exit. (stop and exit are symbols.)\n"
                      "There is an auto-clear timer, the status of which you see on the \n"
                      "left of the buttons. The timer is controlled from the config dialog.\n"
                      "For more detailed help go to: \n"
-                     "https://github.com/JeffersonLab/RasterMon/wiki"
+                     "https://github.com/JeffersonLab/CERMon/wiki"
                      );
          hd->Popup();
          break;
@@ -325,10 +326,10 @@ void RasterMonGui::HandleMenu(int choice) {
    }
 }
 
-void RasterMonGui::DoConfigure(){
+void CERMonGui::DoConfigure(){
    if(fConfig == nullptr){
       if(fDebug>1) std::cout << "Start Configure new configure dialog.\n";
-      fConfig = new RasterMonConfigPanel(this, fInfo);
+      fConfig = new ConfigPanel(this, fInfo);
    }else{
       auto x = this->GetX();
       auto y = this->GetY();
@@ -342,7 +343,7 @@ void RasterMonGui::DoConfigure(){
    }
 }
 
-void RasterMonGui::DoDraw() {
+void CERMonGui::DoDraw() {
    // This is a Draw for the tab selected canvas.
    if(fUpdateSelectedTabOnly){
       int current_tab = fTabAreaTabs->GetCurrent();
@@ -354,7 +355,7 @@ void RasterMonGui::DoDraw() {
    // But not if Paused, because Pause calls DoDraw to make sure canvasses are updated, and we don't want to loop.
 }
 
-void RasterMonGui::Pause(int set_state){
+void CERMonGui::Pause(int set_state){
    // Pause or UnPause, there is no try.
    // If set_state == 1  then go to Pause state -- for stop()
    // If set_state == -1 then go to UnPause state -- for go()

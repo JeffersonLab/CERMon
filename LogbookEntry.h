@@ -17,11 +17,11 @@
 // ONLY that location works.
 
 
-#ifndef RASTERMON_RASTERLOGBOOKENTRY_H
-#define RASTERMON_RASTERLOGBOOKENTRY_H
+#ifndef LOGBOOKENTRY_H
+#define LOGBOOKENTRY_H
 
 #include <filesystem>
-#include "RasterHists.h"
+#include "CERMonHists.h"
 #include "TGFrame.h"
 #include "TGButton.h"
 #include "TGTextEntry.h"
@@ -46,12 +46,12 @@
 #define RED "\033[91m"
 #define ENDC "\033[0m"
 
-class RasterLogBookEntry {
+class LogBookEntry {
 
-   RQ_OBJECT("RasterLogBookEntry")
+   RQ_OBJECT("LogBookEntry")
 
 public:
-   RasterLogBookEntry(const TGWindow *parent_window, RasterHists *rhists);
+   LogBookEntry(const TGWindow *parent_window, CERMonHists *rhists);
 
    TGTextEntry* AddTextLine(string label_text, string init_text, string tooltip);
    void MakeEntry();
@@ -78,7 +78,7 @@ public:
    std::string fHistogramPath{DEFAULT_HISTOGRAM_PATH};
    const TGWindow *fParentWindow;
    TGTransientFrame *fMain;
-   RasterHists *fRHists;  // Pointer to the histograms and graphs.
+   CERMonHists *fRHists;  // Pointer to the histograms and graphs.
    bool fAlreadyWritingImages=false;  // Right now, only one thread to write images.
    std::thread fEntryThread;
 
@@ -103,4 +103,4 @@ public:
 };
 
 
-#endif //RASTERMON_RASTERLOGBOOKENTRY_H
+#endif

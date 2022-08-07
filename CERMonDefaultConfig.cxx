@@ -2,14 +2,14 @@
 // Created by Maurik Holtrop on 5/28/22.
 //
 
-#include "RasterMonDefaultConfig.h"
+#include "CERMonDefaultConfig.h"
 // Calibrations:
 double gX_Scale = 0.0104;
 double gX_Offset = -0.011;
 double gY_Scale = -0.011;
 double gY_Offset = 23.9;
 
-void Default_Setup_Raster_Tab(RasterHists *r){
+void Default_Setup_Raster_Tab(CERMonHists *r){
    r->fTabs.emplace_back("Raster", 2, 2);
 
 
@@ -55,7 +55,7 @@ void Default_Setup_Raster_Tab(RasterHists *r){
    r->fHists.back().hist->SetLineColor(kRed);
 }
 
-void Default_Setup_RasterBit32_Tab(RasterHists *r){
+void Default_Setup_RasterBit32_Tab(CERMonHists *r){
    r->fTabs.emplace_back("RasterPulser", 2, 2);
 
    r->fHists.emplace_back(RASTER_CRATE, RASTER_SLOT, 1,
@@ -104,7 +104,7 @@ void Default_Setup_RasterBit32_Tab(RasterHists *r){
    r->fHists.back().trigger_bits = 1<<31;
 }
 
-void Default_Setup_Raw_Raster_Tab(RasterHists *r){
+void Default_Setup_Raw_Raster_Tab(CERMonHists *r){
    r->fTabs.emplace_back("Raw1", 2, 2);
    r->fHists.emplace_back(RASTER_CRATE, RASTER_SLOT, 1,
                           "RawIx", "Raw ADC 3, I_x;ADC(1) channel", 4096, -0.5, 4095.5);
@@ -128,7 +128,7 @@ void Default_Setup_Raw_Raster_Tab(RasterHists *r){
 //   r->fHists.back().hist->SetStats(false);
 }
 
-void Default_Setup_Raw_Raster_Tab2(RasterHists *r){
+void Default_Setup_Raw_Raster_Tab2(CERMonHists *r){
    r->fTabs.emplace_back("Raw2", 2, 2);
    r->fHists.emplace_back(RASTER_CRATE, RASTER_SLOT, 5,
                           "RawGx", "Raw ADC 5, G(x); ADC(5) channel", 4096, -0.5, 4095.5);
@@ -152,7 +152,7 @@ void Default_Setup_Raw_Raster_Tab2(RasterHists *r){
 //   r->fHists.back().hist->SetStats(false);
 
 }
-void Default_Setup_Raw_Raster_Tab3(RasterHists *r){
+void Default_Setup_Raw_Raster_Tab3(CERMonHists *r){
    r->fTabs.emplace_back("Raw3", 2, 2);
    r->fHists.emplace_back(RASTER_CRATE, RASTER_SLOT, 9,
                           "RawVx", "Raw ADC 9, G(x); ADC(5) channel", 4096, -0.5, 4095.5);
@@ -170,7 +170,7 @@ void Default_Setup_Raw_Raster_Tab3(RasterHists *r){
    r->fHists.back().hist->SetStats(false);
 }
 
-void Default_Setup_1_Channel_Scope(RasterHists *r){
+void Default_Setup_1_Channel_Scope(CERMonHists *r){
    r->fTabs.emplace_back("Scope", 1, 1, 0, 0);
    r->fTabs.back().grid = {1};
    r->fTabs.back().calc = {0}; // Calc 1 - modify the bottom margin.
@@ -184,7 +184,7 @@ void Default_Setup_1_Channel_Scope(RasterHists *r){
 }
 
 
-void Default_Setup_2_Channel_Scope(RasterHists *r){
+void Default_Setup_2_Channel_Scope(CERMonHists *r){
    r->fTabs.emplace_back("Scope", 1, 2, 0, 0);
    r->fTabs.back().grid = {1, 1};
    r->fTabs.back().calc = {1, 0}; // Calc 1 - modify the bottom margin.
@@ -206,7 +206,7 @@ void Default_Setup_2_Channel_Scope(RasterHists *r){
    r->fTabs.back().pad_link = {2, 1};
 }
 
-void Default_Setup_3_Channel_Scope(RasterHists *r){
+void Default_Setup_3_Channel_Scope(CERMonHists *r){
    r->fTabs.emplace_back("Scope", 1, 3, 0, 0);
    r->fTabs.back().grid = {1, 1, 1};
    r->fTabs.back().calc = {1, 1, 0}; // Calc 1 - modify the bottom margin.
@@ -239,7 +239,7 @@ void Default_Setup_3_Channel_Scope(RasterHists *r){
    r->fTabs.back().pad_link = {2, 3, 1};
 }
 
-void Default_Setup_Helicity(RasterHists *r){
+void Default_Setup_Helicity(CERMonHists *r){
    r->fTabs.emplace_back("Helicity", 2, 2);
    r->fTabs.back().logy = {true, true, true, true};
 
@@ -292,7 +292,7 @@ void Default_Setup_Helicity(RasterHists *r){
    r->fHelicity_legend->AddEntry(r->fHists.back().GetHist(), "Quartet");
 }
 
-void Default_Setup_Trigger(RasterHists *r){
+void Default_Setup_Trigger(CERMonHists *r){
    /////////////// Trigger Tab
    r->fTabs.emplace_back("Trigger", 1, 2);
    r->fTabs.back().logy = {true, true};
@@ -326,7 +326,7 @@ void Default_Setup_Trigger(RasterHists *r){
    r->fTabs.back().hist_pads.push_back(2);
 }
 
-void Default_Initialize_Histograms(RasterHists *r){
+void Default_Initialize_Histograms(CERMonHists *r){
    // This function is called at the start to initialize the histograms.
    // This will setup the structures for the tabs and the channels for the scope and histograms with a default layout.
    //

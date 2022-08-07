@@ -2,12 +2,12 @@
 // Created by Maurik Holtrop on 6/14/22.
 //
 
-#include "RasterMonConfigInfo.h"
+#include "ConfigInfo.h"
 
 
-ClassImp(RasterMonConfigInfo);
+ClassImp(ConfigInfo);
 
-void RasterMonConfigInfo::SaveToJSON(){
+void ConfigInfo::SaveToJSON(){
    // Open the fJSONFile and stream the config class to the file.
    TString json = TBufferJSON::ToJSON(this);
    std::ofstream out(fJSONFile);
@@ -16,7 +16,7 @@ void RasterMonConfigInfo::SaveToJSON(){
    std::cout << "\033[94m RasterMon -- Config panel information saved to: " << fJSONFile << "\033[0m \n";
 };
 
-void RasterMonConfigInfo::LoadFromJSON(){
+void ConfigInfo::LoadFromJSON(){
    // Open the fJSONFile and stream the config class from the file.
    try {
       std::ifstream in(fJSONFile);
@@ -27,7 +27,7 @@ void RasterMonConfigInfo::LoadFromJSON(){
       std::stringstream in_json;
       in_json << in.rdbuf();
       std::string json{in_json.str()};
-      RasterMonConfigInfo *new_info = nullptr;
+      ConfigInfo *new_info = nullptr;
       TBufferJSON::FromJSON(new_info, json.c_str());
       CopyInfo(new_info);
    } catch (const std::exception& e){
@@ -37,7 +37,7 @@ void RasterMonConfigInfo::LoadFromJSON(){
 
 };
 
-void RasterMonConfigInfo::CopyInfo(RasterMonConfigInfo *that) {
+void ConfigInfo::CopyInfo(ConfigInfo *that) {
    // Coppy only the relevant setting data from one RasterMonConfigInfo to self.
    fDebugLevel = that->fDebugLevel;
    fEvioDebugLevel = that->fEvioDebugLevel;
@@ -51,7 +51,7 @@ void RasterMonConfigInfo::CopyInfo(RasterMonConfigInfo *that) {
    fOffset_y = that->fOffset_y;
 }
 
-void RasterMonConfigInfo::GetValues(){
+void ConfigInfo::GetValues(){
    // Load the Info structure with the values from other places in the code.
    fScopeBufDepth = fEvio->GetAdcBufferSize();
 //   fUpdateRate = update_rate;
@@ -62,7 +62,7 @@ void RasterMonConfigInfo::GetValues(){
    GetScaleOffset();
 }
 
-void RasterMonConfigInfo::PutValues(){
+void ConfigInfo::PutValues(){
    // Put the updated values in the correct place, which we do after a "Load".
    fEvio->fDebug = fEvioDebugLevel;
    fHists->fDebug = fDebugLevel;
@@ -71,7 +71,7 @@ void RasterMonConfigInfo::PutValues(){
    SetScaleOffset();
 }
 
-void RasterMonConfigInfo::GetScaleOffset() {
+void ConfigInfo::GetScaleOffset() {
    // Get the X and Y scale offsets for the raster hists.
    // Find histograms Raster_xy and get the constants from them. Raster_x, Raster_y should have same constants!
    for (auto &h_t: fHists->fHists) {
@@ -84,7 +84,7 @@ void RasterMonConfigInfo::GetScaleOffset() {
    }
 }
 
-void RasterMonConfigInfo::SetScaleOffset() {
+void ConfigInfo::SetScaleOffset() {
    // Get the X and Y scale offsets for the raster hists.
    // Find histograms Raster_x, Raster_y, Raster_xy and get the constants on them.
    for (auto &h_t: fHists->fHists) {
@@ -104,7 +104,7 @@ void RasterMonConfigInfo::SetScaleOffset() {
    }
 }
 
-void RasterMonConfigInfo::UpdateADCBufDepth() {
+void ConfigInfo::UpdateADCBufDepth() {
    // Update the circular buffer and resize the graphs for the ADC scopes.
    auto bufsize = (unsigned long) (fScopeBufDepth);
    if(fHists->fDebug )std::cout << "UpdateADCBufDepth to " << bufsize << std::endl;
@@ -114,14 +114,14 @@ void RasterMonConfigInfo::UpdateADCBufDepth() {
    if (!prevstate) fHists->UnPause();
 }
 
-void RasterMonConfigInfo::UpdateHistClearRate(){
+void ConfigInfo::UpdateHistClearRate(){
    if(fAutoClearOn) fHists->SetAutoClearRateOn();
    else fHists->SetAutoClearRateOff();
    fHists->SetAutoClearRate(fAutoClearRate);
    fAutoClearOn = fHists->fHistClearTimerIsOn;  // In case the value was too low, which turns off the auto clear.
 }
 
-void RasterMonConfigInfo::SetDebug(int i) {
+void ConfigInfo::SetDebug(int i) {
    // Just set the local value. This is linked to a signal from RasterMonConfigPanel,
    // which also signals to RasterMonGui.
    fDebugLevel = i;

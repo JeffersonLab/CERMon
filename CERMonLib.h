@@ -7,12 +7,12 @@
 #ifndef RASTERMON_RASTERLIB_H
 #define RASTERMON_RASTERLIB_H
 
-#include "RasterMonGui.h"
-#include "RasterEvioTool.h"
-#include "RasterHists.h"
-#include "RasterMonEventInfo.h"
-#include "RasterMonDefaultConfig.h"
+#include "CERMonGui.h"
+#include "CERMonEvioTool.h"
+#include "CERMonHists.h"
+#include "CERMonEventInfo.h"
+#include "CERMonDefaultConfig.h"
 // #include "RasterMonConfig.h"
-#include "RasterMonConfigInfo.h"
+#include "ConfigInfo.h"
 
 #endif //RASTERMON_RASTERLIB_H

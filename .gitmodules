@@ -1,0 +1,3 @@
+[submodule "EvioTool"]
+	path = EvioTool
+	url = https://github.com/JeffersonLab/EvioTool.git

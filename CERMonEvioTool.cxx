@@ -2,10 +2,10 @@
 // Created by Maurik Holtrop on 3/28/22.
 //
 
-#include "RasterEvioTool.h"
+#include "CERMonEvioTool.h"
 #include <thread>
 
-RasterEvioTool::RasterEvioTool(string infile) : EvioTool(infile){
+CERMonEvioTool::CERMonEvioTool(string infile) : EvioTool(infile){
    // Basic setup of the EvioTool Class
 
    fAutoAdd = false;  // Do not add every bank in the file automatically.
@@ -14,12 +14,12 @@ RasterEvioTool::RasterEvioTool(string infile) : EvioTool(infile){
    tag_masks = {0x80}; // Any event with bit 6 set  2<<6
    // EVIO Data structure unpack:
    fEvioHead = AddLeaf<unsigned int>("fEvioHead", 49152, 0, "Evio Event Header Info");
-   fRasterHead =  new RasterMonEventInfo(this);  // Calls AddBank internally.
+   fRasterHead =  new CERMonEventInfo(this);  // Calls AddBank internally.
    fETWaitMode = ET_SLEEP;
    fEtReadChunkSize = 10;
 }
 
-int RasterEvioTool::AddChannel(unsigned short bank_tag, unsigned short slot, unsigned short channel){
+int CERMonEvioTool::AddChannel(unsigned short bank_tag, unsigned short slot, unsigned short channel){
    // Add one data item to the structure for parsing EVIO files.
    // Return the index to the fChannelAverage and fTimeBuf and fAdcAverageBuf data stores.
    //
@@ -57,20 +57,20 @@ int RasterEvioTool::AddChannel(unsigned short bank_tag, unsigned short slot, uns
             }
          }
       }
-      cout << "RasterEvioTool::AddChannel - Uh oh, I did not add the channel, but I could not find it either.\n";
+      cout << "CERMonEvioTool::AddChannel - Uh oh, I did not add the channel, but I could not find it either.\n";
       return -1;  //
    }
 
 }
 
-void RasterEvioTool::Clear(Option_t *opt) {
+void CERMonEvioTool::Clear(Option_t *opt) {
    // Clears the entire data structures.
    // Here we clear the *local* data copy, then call the parent Clear to clear the rest.
    fChannelAverage.assign(fChannelAverage.size(), 0);
    EvioTool::Clear(opt);
 }
 
-int RasterEvioTool::Next() {
+int CERMonEvioTool::Next() {
    // Get the next event from EVIO and process it.
    // If the file is not opened, or the read causes an EOF, open the next file.
    Clear("");
@@ -157,4 +157,4 @@ int RasterEvioTool::Next() {
    return(EvioTool_Status_OK);
 }
 
-ClassImp(RasterEvioTool);
+ClassImp(CERMonEvioTool);

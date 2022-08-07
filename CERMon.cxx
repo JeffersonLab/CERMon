@@ -38,9 +38,9 @@
 #include <filesystem>
 #include <cstdlib>
 #include "CERMon.h"
-#include "CERMonConfigInfo.h"
+#include "ConfigInfo.h"
 
-extern void Initialize_Histograms(CERHists *r);
+extern void Initialize_Histograms(CERMonHists *r);
 
 int main(int argc, char **argv) {
    ROOT::EnableThreadSafety();
@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
       ("C,config", "Configuration root macro (C) file. default (none)",
             cxxopts::value(config_file)->default_value(""))
       ("j,json", "JSON Configuration file to set Config panel initial values. (CERMonConfig.json)",
-            cxxopts::value(json_config_file)->default_value(RASTERMON_DEFAULT_JSON_CONFIG))
+            cxxopts::value(json_config_file)->default_value(CERMON_DEFAULT_JSON_CONFIG))
       ("i,inputfiles","List of input evio files. This option is optional. ",
             cxxopts::value<std::vector<std::string>>())
       ("help", "Print help")
@@ -113,9 +113,9 @@ int main(int argc, char **argv) {
 
 
       auto evio = new CERMonEvioTool();
-      auto RHists = new CERHists(evio);
-      auto info = new CERMonMonConfigInfo(RHists, evio);
-      auto CERMonmon = new CERMonMonGui(info, RHists, gClient->GetRoot(), 800, 600);
+      auto RHists = new CERMonHists(evio);
+      auto info = new ConfigInfo(RHists, evio);
+      auto cermon = new CERMonGui(info, RHists, gClient->GetRoot(), 800, 600);
 
       if (debug == 1) evio->fDebug = 0;
       if (debug > 1) evio->fDebug = EvioTool::EvioTool_Debug_Info;

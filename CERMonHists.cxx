@@ -1,13 +1,13 @@
 //
 // Created by Maurik Holtrop on 3/29/22.
 //
-#include "RasterHists.h"
+#include "CerMonHists.h"
 
-RasterHists::~RasterHists(){
+CERMonHists::~CERMonHists(){
 // Cleanup.
 }
 
-TGTab * RasterHists::AddTabArea(TGWindow *frame, int w, int h) {
+TGTab * CERMonHists::AddTabArea(TGWindow *frame, int w, int h) {
    // Add a Tab Area to the main window frame.
    fTabAreaTabs = new TGTab(frame, 1, 1);
 
@@ -26,7 +26,7 @@ TGTab * RasterHists::AddTabArea(TGWindow *frame, int w, int h) {
    return fTabAreaTabs;
 }
 
-void RasterHists::SetupCanvas(TabSpace_t &tab, TCanvas *canvas){
+void CERMonHists::SetupCanvas(TabSpace_t &tab, TCanvas *canvas){
    // Process the canvasses.
    if( tab.canvas == nullptr && canvas == nullptr){
       cout << "ERROR - Tab has no canvas. ";
@@ -75,7 +75,7 @@ void RasterHists::SetupCanvas(TabSpace_t &tab, TCanvas *canvas){
    //   legend->Draw();
 }
 
-void RasterHists::SetupData() {
+void CERMonHists::SetupData() {
    // For each histogram or graph, fill in the data fetch information so HistFillWorker's can do their job.
    // Link the EVIO data for each histogram to the data store.
    // This also tells (RasterEvioTool *)fEvio which channels to store.
@@ -100,7 +100,7 @@ void RasterHists::SetupData() {
    }
 }
 
-TAxis * RasterHists::GetTopAxisFromPad(TPad *pad){
+TAxis * CERMonHists::GetTopAxisFromPad(TPad *pad){
    // Collect the axes from a pad and return them in a vector.
    // Note that the returned object is
    TAxis * axes;
@@ -119,7 +119,7 @@ TAxis * RasterHists::GetTopAxisFromPad(TPad *pad){
    return axes;
 }
 
-void RasterHists::SubPadCopyRange(TPad *one, TPad *two){
+void CERMonHists::SubPadCopyRange(TPad *one, TPad *two){
 // Set the X axis of TPad two to be the same as that for TPad one.
 // Here we assume that each histogram or TGraph has the same number of bins in one and two.
 //
@@ -151,7 +151,7 @@ void RasterHists::SubPadCopyRange(TPad *one, TPad *two){
    }
 }
 
-void RasterHists::SubPadResized(int i) {
+void CERMonHists::SubPadResized(int i) {
    // We got a signal from Pad i that it has resized.
    // We know you can only resize a pad that is on the current tab. So find the current tab and then
    // see what pad this pad is linked to, then resize the other pad.
@@ -171,7 +171,7 @@ void RasterHists::SubPadResized(int i) {
    }
 }
 
-void RasterHists::ResizeScopeGraphs(unsigned long size){
+void CERMonHists::ResizeScopeGraphs(unsigned long size){
    if(fDebug>1) std::cout << "Resizing the oscilloscope graphs to: " << size << std::endl;
 //   fGRaw_x->Expand(size);
 ////   fGRaw_x->Set(size);
@@ -183,7 +183,7 @@ void RasterHists::ResizeScopeGraphs(unsigned long size){
 //   fGRaw2_y->Set(size);
 }
 
-void RasterHists::DrawCanvas(int tab_no, TCanvas *canvas, vector<Histogram_t> &histograms, vector<Graph_t> &graphs,
+void CERMonHists::DrawCanvas(int tab_no, TCanvas *canvas, vector<Histogram_t> &histograms, vector<Graph_t> &graphs,
                              bool batch) {
    auto &tab = fTabs.at(tab_no);
    TCanvas *canv;
@@ -255,7 +255,7 @@ void RasterHists::DrawCanvas(int tab_no, TCanvas *canvas, vector<Histogram_t> &h
    fDrawLock.unlock();
 }
 
-void RasterHists::FillGraphs(int tab_no, vector<Graph_t> &graphs) {
+void CERMonHists::FillGraphs(int tab_no, vector<Graph_t> &graphs) {
    // Fill the graphs with the information from the fEvio buffers.
    // We don't need to do this every event, only when we update the tab that displays the graphs.
    // This is a relatively expensive operation, and gets pretty slow for big buffers.
@@ -285,7 +285,7 @@ void RasterHists::FillGraphs(int tab_no, vector<Graph_t> &graphs) {
    }
 }
 
-void RasterHists::Stop(){
+void CERMonHists::Stop(){
    fKeepWorking = false;
    fHistClearTimer->TurnOff();
    for(auto &&worker : fWorkers) {
@@ -310,19 +310,19 @@ void RasterHists::Stop(){
    fWorkers.clear();
 }
 
-void RasterHists::Go(){
+void CERMonHists::Go(){
    fPause = false;
    if(fKeepWorking) return;  // Do not allow multiple go() clicks.
    fKeepWorking = true;
    // Start up the thread workers to fill the histogram.
    if(fDebug) std::cout << "Start " <<  fNWorkers << " workers.\n";
    for(int i=0; i< fNWorkers; ++i) {
-      fWorkers.emplace_back(&RasterHists::HistFillWorker, this, i);
+      fWorkers.emplace_back(&CERMonHists::HistFillWorker, this, i);
    }
    if(fHistClearTimerIsOn) fHistClearTimer->TurnOn();
 }
 
-void RasterHists::DoDraw(int active_tab){
+void CERMonHists::DoDraw(int active_tab){
    if(active_tab == -1) {
       for(int i_tab=0; i_tab< fTabs.size(); ++i_tab) {
          FillGraphs(i_tab, fGraphs);
@@ -334,7 +334,7 @@ void RasterHists::DoDraw(int active_tab){
    }
 }
 
-void RasterHists::Clear(int active_tab){
+void CERMonHists::Clear(int active_tab){
    // Clear the histograms
    if(active_tab== -1){ // Clears EVERYTHING
       if(fDebug) std::cout << "RasterHists::clear() everything \n";
@@ -369,7 +369,7 @@ void RasterHists::Clear(int active_tab){
    DoDraw();    // Draw so that even during a Pause the display is updated.
 }
 
-void RasterHists::HistFillWorker(int thread_num){
+void CERMonHists::HistFillWorker(int thread_num){
    // This is the main worker component of the program. It is currently setup to run in a single thread.
    // If multiple threads are needed, more care needs to be taken to fill histograms efficiently since a simple
    // histogram fill mutex lock will not scale well.
@@ -502,7 +502,7 @@ void RasterHists::HistFillWorker(int thread_num){
    if(fDebug>0) std::cout << "RasterHists::HistFillWorker - Exit thread "<< thread_num << "\n";
 }
 
-void RasterHists::SavePDF(const string &file, bool overwrite){
+void CERMonHists::SavePDF(const string &file, bool overwrite){
    // Save the canvasses as PDF file
    DoDraw();  // Make sure they are all updated.
 
@@ -517,7 +517,7 @@ void RasterHists::SavePDF(const string &file, bool overwrite){
    }
 };
 
-void RasterHists::SaveCanvasesToPDF(const string &filename, std::vector<TCanvas *> *canvasses) {
+void CERMonHists::SaveCanvasesToPDF(const string &filename, std::vector<TCanvas *> *canvasses) {
    // Save the canvasses to PDF file.
    for (int i = 0; i < canvasses->size(); ++i) {
       auto canv = canvasses->at(i);
@@ -534,7 +534,7 @@ void RasterHists::SaveCanvasesToPDF(const string &filename, std::vector<TCanvas 
    canvasses->clear();
 }
 
-std::vector<std::string> RasterHists::SaveCanvasesToImageFiles(const string &filename, const string &ending, std::vector<TCanvas *> *canvasses){
+std::vector<std::string> CERMonHists::SaveCanvasesToImageFiles(const string &filename, const string &ending, std::vector<TCanvas *> *canvasses){
    // Save the canvasses  as set of PNG, GIF or JPG files, depending on the "ending" provided.
    // The tabs will be stored as filename_#.ending  where # is the tab number.
    // Make sure they are all updated.
@@ -561,7 +561,7 @@ std::vector<std::string> RasterHists::SaveCanvasesToImageFiles(const string &fil
 };
 
 
-void RasterHists::SaveRoot(const string &file, bool overwrite){
+void CERMonHists::SaveRoot(const string &file, bool overwrite){
    // Save the histograms to a ROOT file.
    std::unique_ptr<TFile> out_file;
    try {

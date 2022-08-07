@@ -32,7 +32,7 @@
 #include <vector>
 #include <chrono>
 
-#include "CERMonConfigInfo.h"
+#include "ConfigInfo.h"
 #include "CERMonGui.h"
 #include "CERMonEvioTool.h"
 #include "CERMonEventInfo.h"

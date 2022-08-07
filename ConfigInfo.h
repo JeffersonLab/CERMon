@@ -12,11 +12,11 @@
 
 #include "TObject.h"
 #include "TBufferJSON.h"
-#include "RasterHists.h"
-#include "RasterEvioTool.h"
+#include "CERMonHists.h"
+#include "CERMonEvioTool.h"
 
 // Initial values are from the start of the run.
-class RasterMonConfigInfo : public TObject {
+class ConfigInfo : public TObject {
 
 public:
    int fDebugLevel = 0;
@@ -31,15 +31,15 @@ public:
    double fOffset_y = 79.6;
 
    std::string fJSONFile{"RasterMonConfig.json"};  //! Default name for the config file. Not stored.
-   RasterHists *fHists=nullptr;                            //! Pointer to RasterHists. Not stored.
-   RasterEvioTool *fEvio=nullptr;                          //! Pointer to RasterEvioTool. Not stored.
+   CERMonHists *fHists=nullptr;                            //! Pointer to RasterHists. Not stored.
+   CERMonEvioTool *fEvio=nullptr;                          //! Pointer to RasterEvioTool. Not stored.
 
 public:
-   RasterMonConfigInfo(){};
-   RasterMonConfigInfo(RasterHists *hists, RasterEvioTool *evio): fHists(hists), fEvio(evio){};
+   ConfigInfo(){};
+   ConfigInfo(CERMonHists *hists, CERMonEvioTool *evio): fHists(hists), fEvio(evio){};
    void SaveToJSON();
    void LoadFromJSON();
-   void CopyInfo(RasterMonConfigInfo *that);
+   void CopyInfo(ConfigInfo *that);
 
    void GetValues();
    void PutValues();
@@ -51,7 +51,7 @@ public:
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winconsistent-missing-override"
-   ClassDef(RasterMonConfigInfo, 1)
+   ClassDef(ConfigInfo, 1)
 #pragma clang diagnostic pop
 };
 

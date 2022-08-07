@@ -17,12 +17,12 @@
 #include <string>
 #include <map>
 
-#include "RasterEvioTool.h"
+#include "CERMonEvioTool.h"
 
 class ETConnectionConfig: public TGTransientFrame {
 
 public:
-   RasterEvioTool *fEvio;
+   CERMonEvioTool *fEvio;
    TGComboBox *fPredefCombo;
    TGTextEntry *fTextEntryStationName;
    TGTextEntry *fTextEntryHostName;
@@ -50,8 +50,8 @@ public:
 
 
 public:
-   ETConnectionConfig(TGWindow *parent_window, RasterEvioTool *evio): fEvio(evio),
-   TGTransientFrame(gClient->GetRoot(), parent_window, 400, 200){
+   ETConnectionConfig(TGWindow *parent_window, CERMonEvioTool *evio): fEvio(evio),
+                                                                      TGTransientFrame(gClient->GetRoot(), parent_window, 400, 200){
       // Handle the user input for making the ET ring "work".
       // See the tutorial/gui/guitest.C class TestDialog for examples on building dialogs.
       // Pop up the window and process user input.
