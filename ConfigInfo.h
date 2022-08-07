@@ -30,9 +30,9 @@ public:
    double fScale_y =  -0.0369;
    double fOffset_y = 79.6;
 
-   std::string fJSONFile{"RasterMonConfig.json"};  //! Default name for the config file. Not stored.
-   CERMonHists *fHists=nullptr;                            //! Pointer to RasterHists. Not stored.
-   CERMonEvioTool *fEvio=nullptr;                          //! Pointer to RasterEvioTool. Not stored.
+   std::string fJSONFile{"CERMonConfig.json"};  //! Default name for the config file. Not stored.
+   CERMonHists *fHists=nullptr;                            //! Pointer to CERMonHists. Not stored.
+   CERMonEvioTool *fEvio=nullptr;                          //! Pointer to CERMonEvioTool. Not stored.
 
 public:
    ConfigInfo(){};

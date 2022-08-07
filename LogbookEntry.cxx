@@ -6,7 +6,7 @@
 #include <thread>
 #include <ctime>
 #include <cstdlib>
-#include "LogBookEntry.h"
+#include "LogbookEntry.h"
 
 #ifdef HAS_LOGBOOK
 #include "ELogBookShim.h"

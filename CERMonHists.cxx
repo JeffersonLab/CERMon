@@ -1,7 +1,7 @@
 //
 // Created by Maurik Holtrop on 3/29/22.
 //
-#include "CerMonHists.h"
+#include "CERMonHists.h"
 
 CERMonHists::~CERMonHists(){
 // Cleanup.
@@ -44,8 +44,8 @@ void CERMonHists::SetupCanvas(TabSpace_t &tab, TCanvas *canvas){
          char slot_name[20];
          sprintf(slot_name, "SubPad%dResized()", i);
          if(fDebug>2) std::cout << "Connecing pad " << i << " RangeChanged to slot " << slot_name << std::endl;
-         pad->Connect("RangeChanged()", "RasterHists", this, slot_name);
-         pad->Connect("UnZoomed()", "RasterHists", this,  slot_name);
+         pad->Connect("RangeChanged()", "CERMonHists", this, slot_name);
+         pad->Connect("UnZoomed()", "CERMonHists", this,  slot_name);
       }
    }
    for(int i=0; i< tab.logy.size(); ++i){    // Set the logy for pads that want this. Can be set/unset by clicking on pad.
@@ -337,7 +337,7 @@ void CERMonHists::DoDraw(int active_tab){
 void CERMonHists::Clear(int active_tab){
    // Clear the histograms
    if(active_tab== -1){ // Clears EVERYTHING
-      if(fDebug) std::cout << "RasterHists::clear() everything \n";
+      if(fDebug) std::cout << "CERMonHists::clear() everything \n";
       for(auto &h_t: fHists){
          auto &h = h_t.hist;
          h->Reset();
@@ -349,13 +349,13 @@ void CERMonHists::Clear(int active_tab){
          for(auto &buf: fEvio->fAdcAverageBuf) buf.clear();
       }
    }else if(active_tab== -2) { // Clears HISTOGRAMS only
-      if (fDebug) std::cout << "RasterHists::clear() histograms. \n";
+      if (fDebug) std::cout << "CERMonHists::clear() histograms. \n";
       for (auto &h_t: fHists) {
          auto &h = h_t.hist;
          h->Reset();
       }
    }else if(active_tab>=0 && active_tab < fTabs.size() ){
-      if(fDebug) std::cout << "RasterHists::clear() tab " << active_tab << "\n";
+      if(fDebug) std::cout << "CERMonHists::clear() tab " << active_tab << "\n";
       auto tab = fTabs.at(active_tab);
       for(int i_h: tab.hists){
          fHists.at(i_h).hist->Reset();
@@ -389,7 +389,7 @@ void CERMonHists::HistFillWorker(int thread_num){
    static double y_max;
    static double y_min;
 
-   if(fDebug>0) std::cout << "RasterHists::HistFillWorker - Start thread "<< thread_num << "\n";
+   if(fDebug>0) std::cout << "CERMonHists::HistFillWorker - Start thread "<< thread_num << "\n";
 
    while(fKeepWorking){
       if(!fPause) {
@@ -499,7 +499,7 @@ void CERMonHists::HistFillWorker(int thread_num){
          std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }
    }
-   if(fDebug>0) std::cout << "RasterHists::HistFillWorker - Exit thread "<< thread_num << "\n";
+   if(fDebug>0) std::cout << "CERMonHists::HistFillWorker - Exit thread "<< thread_num << "\n";
 }
 
 void CERMonHists::SavePDF(const string &file, bool overwrite){

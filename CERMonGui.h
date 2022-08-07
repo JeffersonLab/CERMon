@@ -35,7 +35,7 @@
 #include "CERMonEvioTool.h"
 #include "ETConnectionConfig.h"
 #include "ConfigPanel.h"
-#include "LogBookEntry.h"
+#include "LogbookEntry.h"
 
 class CERMonGui : public TGMainFrame {
 
@@ -132,7 +132,7 @@ public:
 
    void SetDebug(int level){
       // Set the debug level for RasterMonGui and RasterHists
-      cout << "RasterMonGui::SetDebug to level " << level << endl;
+      cout << "CERMonGui::SetDebug to level " << level << endl;
       fDebug = level;
       fRHists->SetDebug(level);
    }
@@ -165,7 +165,7 @@ public:
 
    void Exit(){
       Stop();
-      cout << "Exiting RasterMon. Bye now. \n";
+      cout << "Exiting CERMon. Bye now. \n";
       CloseWindow();
       gApplication->Terminate();
    }
@@ -194,10 +194,10 @@ public:
          StatusBarUpdate();
          DoDraw();
       }else if(timer == fEvioStatusCheckTimer){
-         if(fDebug>2) std::cout << "RasterMon: ET status check: Is alive: " << fEvio->IsETAlive() << "\n";
+         if(fDebug>2) std::cout << "CERMon: ET status check: Is alive: " << fEvio->IsETAlive() << "\n";
          if(!fEvio->IsETAlive()){
             // Reset the ET system
-            std::cout << "RasterMon: ET system dead. Trying to reconnect.\n";
+            std::cout << "CERMon: ET system dead. Trying to reconnect.\n";
             fEvio->Close();
             fEvio->ReOpenEt();
          }
@@ -213,4 +213,4 @@ ClassDef(CERMonGui, 0)
 };
 
 
-#endif //RASTERMON_RASTERMONGUI_H
+#endif

@@ -13,7 +13,7 @@ void ConfigInfo::SaveToJSON(){
    std::ofstream out(fJSONFile);
    out << json;
    out.close();
-   std::cout << "\033[94m RasterMon -- Config panel information saved to: " << fJSONFile << "\033[0m \n";
+   std::cout << "\033[94m CERMon -- Config panel information saved to: " << fJSONFile << "\033[0m \n";
 };
 
 void ConfigInfo::LoadFromJSON(){
@@ -21,7 +21,7 @@ void ConfigInfo::LoadFromJSON(){
    try {
       std::ifstream in(fJSONFile);
       if(!in.is_open()){
-         std::cout << "\033[93m RasterMonConfigInfo - Could not open the configuration file:" << fJSONFile << "\033[0m \n";
+         std::cout << "\033[93m ConfigInfo - Could not open the configuration file:" << fJSONFile << "\033[0m \n";
          return;
       }
       std::stringstream in_json;
@@ -31,7 +31,7 @@ void ConfigInfo::LoadFromJSON(){
       TBufferJSON::FromJSON(new_info, json.c_str());
       CopyInfo(new_info);
    } catch (const std::exception& e){
-      std::cout << "\033[93m RasterMonConfigInfo - Could not read the configuration file. \n";
+      std::cout << "\033[93m ConfigInfo - Could not read the configuration file. \n";
       std::cout << e.what() << "\033[0m \n";
    }
 

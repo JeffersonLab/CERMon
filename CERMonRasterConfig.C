@@ -40,7 +40,7 @@ void Default_Setup_3_Channel_Scope(CERMonHists *r);
 void Default_Setup_Helicity(CERMonHists *r);
 void Default_Setup_Trigger(CERMonHists *r);
 
-void CERMonConfig(long r_h_pointer_long) {  // Function name *must* be the same as the filename. Argument must be long.
+void CERMonRasterConfig(long r_h_pointer_long) {  // Function name *must* be the same as the filename. Argument must be long.
    CERMonHists *r = (CERMonHists *)r_h_pointer_long;  // This is like, super dangerous and makes me really unhappy.
 
    if(r->fDebug) printf("We are configuring CERMonHists from pointer 0x%lx \n",r_h_pointer_long);
@@ -359,7 +359,7 @@ void Default_Setup_Trigger(CERMonHists *r){
    r->fTabs.back().hist_pads.push_back(1); // Show on pad 1.
    r->fHists.back().hist->SetFillColor(kBlue);
    r->fHists.back().special_fill = kHist_Special_Fill_Trigger;
-   
+
    r->fHists.emplace_back(0, 0, 2, "TriggerBits31", "Trigger Bit 31", 32, -0.5, 31.5);
    int hist2 = r->fHists.size()-1;
    r->fTabs.back().hists.push_back(hist2);

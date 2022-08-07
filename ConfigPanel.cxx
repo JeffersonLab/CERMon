@@ -17,8 +17,8 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
 
    fInfo->GetValues();
 
-   SetWindowName("RasterMon Configure Dialog");
-   Connect("CloseWindow()", "RasterMonConfigPanel", this, "CloseWindow()");
+   SetWindowName("CERMon Configure Dialog");
+   Connect("CloseWindow()", "ConfigPanel", this, "CloseWindow()");
    DontCallClose(); // to avoid double deletions.
    // use hierarchical cleaning
    SetCleanup(kDeepCleanup);
@@ -28,16 +28,16 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    // ------------- Bottom button row -------------
 
    auto CloseButton = new TGTextButton(Frame1, "&Close", 3);
-   CloseButton->Connect("Clicked()", "RasterMonGui", (TGWindow *) fRasGui, "CloseConfigure()");
+   CloseButton->Connect("Clicked()", "CERMonGui", (TGWindow *) fRasGui, "CloseConfigure()");
    Frame1->AddFrame(CloseButton, new TGLayoutHints(kLHintsTop | kLHintsRight, 2, 10, 2, 4));
 
    auto SaveButton = new TGTextButton(Frame1, "&Save", 2);
-   SaveButton->Connect("Clicked()", "RasterMonConfigInfo", fInfo, "SaveToJSON()");
+   SaveButton->Connect("Clicked()", "CERMonConfigInfo", fInfo, "SaveToJSON()");
    Frame1->AddFrame(SaveButton, new TGLayoutHints(kLHintsTop | kLHintsRight, 2, 10, 2, 4));
 
    auto LoadButton = new TGTextButton(Frame1, "&Load", 1);
-   LoadButton->Connect("Clicked()", "RasterMonConfigInfo", fInfo, "LoadFromJSON()");
-   LoadButton->Connect("Clicked()", "RasterMonConfigPanel", this, "UpdateDisplay()");
+   LoadButton->Connect("Clicked()", "CERMonConfigInfo", fInfo, "LoadFromJSON()");
+   LoadButton->Connect("Clicked()", "CERMonConfigPanel", this, "UpdateDisplay()");
    Frame1->AddFrame(LoadButton, new TGLayoutHints(kLHintsTop | kLHintsRight, 2, 10, 2, 4));
 
    //  Frame1->AddFrame(CancelButton, L1);
@@ -58,7 +58,7 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    // ********** Debug Level Set  RasterMon ***********
    auto *h_frame_debug_level = new TGHorizontalFrame(Frame2);
    Frame2->AddFrame(h_frame_debug_level, new TGLayoutHints(kLHintsExpandX, 10, 2, 10, 2));
-   auto label_debug_level = new TGLabel(h_frame_debug_level, "RasterMon Gui Debug Level:");
+   auto label_debug_level = new TGLabel(h_frame_debug_level, "CERMon Gui Debug Level:");
    h_frame_debug_level->AddFrame(label_debug_level, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 10, 10, 5, 5));
 
    fDebugLevelChooser = new TGListBox(h_frame_debug_level);
@@ -73,8 +73,8 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
                                  new TGLayoutHints(kLHintsTop | kLHintsLeft | kLHintsExpandX | kLHintsExpandY, 5, 5,
                                                    5, 5));
 
-   fDebugLevelChooser->Connect("Selected(Int_t)", "RasterMonConfigInfo", fInfo, "SetDebug(int)");
-   fDebugLevelChooser->Connect("Selected(Int_t)", "RasterMonGui", (TGWindow *) fRasGui, "SetDebug(int)");
+   fDebugLevelChooser->Connect("Selected(Int_t)", "CERMonConfigInfo", fInfo, "SetDebug(int)");
+   fDebugLevelChooser->Connect("Selected(Int_t)", "CERMonGui", (TGWindow *) fRasGui, "SetDebug(int)");
 
    // ********** Debug Level Set  EVIO ***********
 
@@ -95,10 +95,10 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    fEvioDebug2 = new TGCheckButton(h_frame_debug_level2, "Debug L2", 4);
    h_frame_debug_level2->AddFrame(fEvioDebug2, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 1, 1, 5, 0));
 
-   fEvioDebugInfo1->Connect("Clicked()", "RasterMonConfigPanel", this, "HandleButtons()");
-   fEvioDebugInfo2->Connect("Clicked()", "RasterMonConfigPanel", this, "HandleButtons()");
-   fEvioDebug1->Connect("Clicked()", "RasterMonConfigPanel", this, "HandleButtons()");
-   fEvioDebug2->Connect("Clicked()", "RasterMonConfigPanel", this, "HandleButtons()");
+   fEvioDebugInfo1->Connect("Clicked()", "ConfigPanel", this, "HandleButtons()");
+   fEvioDebugInfo2->Connect("Clicked()", "ConfigPanel", this, "HandleButtons()");
+   fEvioDebug1->Connect("Clicked()", "ConfigPanel", this, "HandleButtons()");
+   fEvioDebug2->Connect("Clicked()", "ConfigPanel", this, "HandleButtons()");
 
    // ********** Refresh Rate Set Box **********
 
@@ -118,8 +118,8 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    auto label1tail = new TGLabel(h_frame1, " ms/frame");
    h_frame1->AddFrame(label1tail, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 2, 1, 5, 5));
 
-   fEnterUpdateRate->Connect("ValueSet(Long_t)", "RasterMonGui", (TGWindow *) fRasGui, "SetUpdateRate()");
-   fEnterUpdateRate->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fEnterUpdateRate->Connect("ValueSet(Long_t)", "CERMonGui", (TGWindow *) fRasGui, "SetUpdateRate()");
+   fEnterUpdateRate->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
 
    // ********** Auto-Clear Set Box ************
 
@@ -133,7 +133,7 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
 
    fAutoClearOnOff = new TGCheckButton(h_frame3_1, "on/off", 5);
    h_frame3_1->AddFrame(fAutoClearOnOff, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 0, 0, 0, 0));
-   fAutoClearOnOff->Connect("Clicked()", "RasterMonConfigPanel", this, "HandleButtons()");
+   fAutoClearOnOff->Connect("Clicked()", "CERMonConfigPanel", this, "HandleButtons()");
    fAutoClearOnOff->SetState((EButtonState)fInfo->fAutoClearOn);
 
    fNumberEntryAutoClear = new TGNumberEntry(h_frame3, fInfo->fAutoClearRate, 10, 2, TGNumberFormat::kNESRealOne,
@@ -143,7 +143,7 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
 
    auto label3tail = new TGLabel(h_frame3, " s/clear");
    h_frame3->AddFrame(label3tail, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 2, 1, 5, 5));
-   fNumberEntryAutoClear->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fNumberEntryAutoClear->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
 
    // ********** Buffer Depth Set Box **********
 
@@ -165,7 +165,7 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    auto label2tail = new TGLabel(h_frame2, "* 1k evt.");
    h_frame2->AddFrame(label2tail, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 2, 1, 5, 5));
 
-   fNumberEntryScopeBufDepth->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fNumberEntryScopeBufDepth->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
 
 
    // ********************** Raster Conversion Numbers.
@@ -182,7 +182,7 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    fEnterScale_x = new TGNumberEntry(h_frame_raster_row, fInfo->fScale_x, 12, 3,
                                      TGNumberFormat::kNESReal, TGNumberFormat::kNEAAnyNumber,
                                      TGNumberFormat::kNELNoLimits);
-   fEnterScale_x->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fEnterScale_x->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
    h_frame_raster_row->AddFrame(fEnterScale_x, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 5, 2, 5, 5));
    auto label_x2 = new TGLabel(h_frame_raster_row, "*x + ");
    h_frame_raster_row->AddFrame(label_x2, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 5, 2, 5, 5));
@@ -190,7 +190,7 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    fEnterOffset_x = new TGNumberEntry(h_frame_raster_row, fInfo->fOffset_x, 12, 4,
                                       TGNumberFormat::kNESReal, TGNumberFormat::kNEAAnyNumber,
                                       TGNumberFormat::kNELNoLimits);
-   fEnterOffset_x->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fEnterOffset_x->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
    h_frame_raster_row->AddFrame(fEnterOffset_x, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 5, 2, 5, 5));
 
    h_frame_raster_row = new TGHorizontalFrame(h_frame_raster_conv);
@@ -201,14 +201,14 @@ ConfigPanel::ConfigPanel(const CERMonGui *parent, ConfigInfo *info):
    fEnterScale_y = new TGNumberEntry(h_frame_raster_row, fInfo->fScale_y, 12, 5,
                                      TGNumberFormat::kNESReal, TGNumberFormat::kNEAAnyNumber,
                                      TGNumberFormat::kNELNoLimits);
-   fEnterScale_y->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fEnterScale_y->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
    h_frame_raster_row->AddFrame(fEnterScale_y, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 5, 2, 5, 5));
    auto label_y2 = new TGLabel(h_frame_raster_row, "*y + ");
    h_frame_raster_row->AddFrame(label_y2, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 5, 2, 5, 5));
    fEnterOffset_y = new TGNumberEntry(h_frame_raster_row, fInfo->fOffset_y, 12, 6,
                                       TGNumberFormat::kNESReal, TGNumberFormat::kNEAAnyNumber,
                                       TGNumberFormat::kNELNoLimits);
-   fEnterOffset_y->Connect("ValueSet(Long_t)", "RasterMonConfigPanel", this, "ValueSet()");
+   fEnterOffset_y->Connect("ValueSet(Long_t)", "ConfigPanel", this, "ValueSet()");
    h_frame_raster_row->AddFrame(fEnterOffset_y, new TGLayoutHints(kLHintsLeft | kLHintsBottom, 5, 2, 5, 5));
 
    UpdateDisplay();
