@@ -4,7 +4,7 @@
 #
 # Author: Maurik Holtrop
 #
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(CERMon VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY True)
 
@@ -53,52 +53,19 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
                  "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
-#
-# Some items need control.
-#
-if (NOT DEFINED DEFAULT_HISTOGRAM_PATH)
-    set(DEFAULT_HISTOGRAM_PATH "/home/clasrun/cermon")
-endif()
-message(STATUS "DEFAULT_HISTOGRAM_PATH set to ${DEFAULT_HISTOGRAM_PATH}")
-if (NOT DEFINED CLI_LOGENTRY_PROGRAM)
-    set(CLI_LOGENTRY_PROGRAM "/home/clasrun/CERMon/logentry")
-endif()
-message(STATUS "CLI_LOGENTRY_PROGRAM set to ${CLI_LOGENTRY_PROGRAM}")
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
 
 # For dictionary compile step to find include files.
 # The target properties for include directories need to be explicitly added to the include_directories.
-include_directories(${PROJECT_SOURCE_DIR})
+
 if(${ELOG_FOUND})
     include_directories(${ELOG_INCLUDE_DIR})
 endif()
-ROOT_GENERATE_DICTIONARY(CERMonLib_dict CERMonLib.h DEPENDENCIES EvioTool evio et LINKDEF CERMonLibLinkDef.h)
 
-list(APPEND ADDITIONAL_CLEAN_FILES CERMonLib_dict.cxx)
+add_subdirectory(CERMon)
 
-set(SOURCE_FILES
-        CERMon.cxx
-        CERMonEventInfo.cxx
-        CERMonGui.cxx
-        CERMonDefaultConfig.cxx
-        CERMonEvioTool.cxx
-        CERMonHists.cxx
-        ConfigInfo.cxx
-        ConfigPanel.cxx
-        LogbookEntry.cxx
-)
+# find_package(ccdb)
+# add_executable(test_tt test_tt ccdb)
 
-add_library(CERMonLib SHARED ${SOURCE_FILES} CERMonLib_dict.cxx)
-
-target_compile_definitions(CERMonLib PRIVATE "DEFAULT_HISTOGRAM_PATH=\"${DEFAULT_HISTOGRAM_PATH}\"")
-target_compile_definitions(CERMonLib PRIVATE "CLI_LOGENTRY_PROGRAM=\"${CLI_LOGENTRY_PROGRAM}\"")
-target_link_libraries(CERMonLib ${ROOT_LIBRARIES} EvioTool evio et)
-
-add_executable(CERMon CERMon.cxx)
-target_link_libraries(CERMon CERMonLib )
-
-install(TARGETS CERMonLib  LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
-install(FILES ${PROJECT_BINARY_DIR}/libCERMonLib_dict_rdict.pcm  DESTINATION lib)
-install(TARGETS CERMon DESTINATION bin)

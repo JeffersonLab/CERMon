@@ -21,6 +21,8 @@
 #define LOGBOOKENTRY_H
 
 #include <filesystem>
+
+#include "CERMonDefines.h"
 #include "CERMonHists.h"
 #include "TGFrame.h"
 #include "TGButton.h"
@@ -29,22 +31,6 @@
 #include "TGLabel.h"
 #include "TGComboBox.h"
 #include "RQ_OBJECT.h"
-
-#ifndef DEFAULT_HISTOGRAM_PATH
-#define DEFAULT_HISTOGRAM_PATH  "/home/clasrun/raster"     // This *should* have been overwritten in CMakeLists.txt
-#endif
-
-#ifndef CLI_LOGENTRY_PROGRAM
-#define CLI_LOGENTRY_PROGRAM "/home/clasrun/RasterMon/logentry"
-#endif
-
-#define RED "\033[91m"
-#define BLUE "\033[94m"
-#define CYAN  "\033[96m"
-#define GREEN  "\033[92m"
-#define YELLOW "\033[93m"
-#define RED "\033[91m"
-#define ENDC "\033[0m"
 
 class LogBookEntry {
 
